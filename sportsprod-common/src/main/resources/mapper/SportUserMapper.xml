@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csb.sports.common.dao.SportUserDao">
+
+    <resultMap id="RM-sportUser" type="com.csb.sports.common.pojo.SportUserDo">
+        <result property="uid" column="`uid`" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="userName" column="`user_name`" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="loginId" column="`login_id`" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="sportUser_columns">
+        `uid`,`user_name`,`login_id`
+    </sql>
+
+    <insert id="insert" parameterType="com.csb.sports.common.pojo.SportUserDo">
+        insert into sport_user (`uid`, `user_name`, `login_id`)
+        values (#{uid,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{loginId,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="selectAll" resultMap="RM-sportUser">
+        select
+        <include refid="sportUser_columns"/>
+        from sport_user
+    </select>
+
+    <delete id="deleteByUid" parameterType="java.lang.String">
+        delete from sport_user
+        where `uid` = #{uid,jdbcType=VARCHAR}
+    </delete>
+
+    <update id="update" parameterType="com.csb.sports.common.pojo.SportUserDo">
+        update sport_user
+        <set>
+            <if test="userName != null">
+                `user_name` = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="loginId != null">
+                `login_id` = #{loginId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where `uid` = #{uid,jdbcType=varchar}
+    </update>
+</mapper>

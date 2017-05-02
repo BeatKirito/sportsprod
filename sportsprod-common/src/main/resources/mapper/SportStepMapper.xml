@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csb.sports.common.dao.SportStepDao">
+
+    <resultMap id="RM-sportStep" type="com.csb.sports.common.pojo.SportStepDo">
+        <result property="uid" column="`uid`" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="gmtCreate" column="`gmt_create`" javaType="java.util.Date" jdbcType="DATE"/>
+        <result property="gmtModified" column="`gmt_modified`" javaType="java.util.Date" jdbcType="DATE"/>
+        <result property="stepCount" column="`step_count`" javaType="int" jdbcType="INTEGER"/>
+        <result property="dataSource" column="`data_source`" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="extInfo" column="`ext_info`" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="sportStep_columns">
+        `uid`,`gmt_create`,`gmt_modified`,`step_count`,`data_source`,`ext_info`
+    </sql>
+
+    <insert id="insert" parameterType="com.csb.sports.common.pojo.SportStepDo">
+        insert into sport_step (`uid`,`gmt_create`,`gmt_modified`,`step_count`,`data_source`,`ext_info`)
+        values (#{uid,jdbcType=VARCHAR}, CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP
+        , #{stepCount,jdbcType=INTEGER}, #{dataSource,jdbcType=VARCHAR}, #{extInfo,jdbcType=VARCHAR} )
+    </insert>
+
+    <select id="selectAll" resultMap="RM-sportStep">
+        select
+        <include refid="sportStep_columns"/>
+        from sport_step
+    </select>
+
+    <delete id="deleteByUid" parameterType="java.lang.String">
+        delete from sport_step
+        where `uid` = #{uid,jdbcType=VARCHAR}
+    </delete>
+
+    <update id="update" parameterType="com.csb.sports.common.pojo.SportStepDo">
+        update sport_step
+        <set>
+            <if test="stepCount != null">
+                `step_count` = #{stepCount,jdbcType=INTEGER},
+            </if>
+            <if test="dataSource != null">
+                `data_source` = #{dataSource,jdbcType=VARCHAR},
+            </if>
+            <if test="extInfo != null">
+                `ext_info` = #{extInfo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where `uid` = #{uid,jdbcType=VARCHAR}
+    </update>
+</mapper>

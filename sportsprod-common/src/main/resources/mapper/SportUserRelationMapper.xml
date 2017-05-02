@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csb.sports.common.dao.SportUserRelationDao">
+
+    <resultMap id="RM-sportUserRelation" type="com.csb.sports.common.pojo.SportUserRelationDo">
+        <result property="uid" column="`uid`" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="friendId" column="`friend_id`" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="gmtCreate" column="`gmt_create`" javaType="java.util.Date" jdbcType="DATE"/>
+        <result property="gmtModified" column="`gmt_modified`" javaType="java.util.Date" jdbcType="DATE"/>
+        <result property="status" column="`status`" javaType="int" jdbcType="INTEGER"/>
+        <result property="extInfo" column="`ext_info`" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="sportUserRelation_columns">
+        `uid`,`friend_id`,`friend_id`,`gmt_create`,`gmt_modified`,`status`,`extInfo`
+    </sql>
+
+    <insert id="insert" parameterType="com.csb.sports.common.pojo.SportUserRelationDo">
+        insert into sport_user_relation (`uid`,`friend_id`,`friend_id`,`gmt_create`,`gmt_modified`,`status`,`extInfo`)
+        values (#{uid,jdbcType=VARCHAR}, #{friendId,jdbcType=VARCHAR}, CURRENT_TIMESTAMP
+          , CURRENT_TIMESTAMP, #{status,jdbcType=INTEGER}, #{extInfo,jdbcType=VARCHAR} )
+    </insert>
+
+    <select id="selectAll" resultMap="RM-sportUserRelation">
+        select
+        <include refid="sportUserRelation_columns"/>
+        from sport_user_relation
+    </select>
+
+    <delete id="deleteByUid" parameterType="java.lang.String">
+        delete from sport_user_relation
+        where `uid` = #{uid,jdbcType=VARCHAR}
+    </delete>
+
+    <update id="update" parameterType="com.csb.sports.common.pojo.SportUserRelationDo">
+        update sport_user_relation
+        <set>
+            <if test="friendId != null">
+                `friend_id` = #{friendId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="extInfo != null">
+                `ext_info` = #{extInfo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where `uid` = #{uid,jdbcType=varchar}
+    </update>
+</mapper>

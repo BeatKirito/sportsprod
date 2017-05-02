@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csb.sports.common.dao.SportRouteDao">
+
+    <resultMap id="RM-sportRoute" type="com.csb.sports.common.pojo.SportRouteDo">
+        <result property="uid" column="`uid`" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="gmtCreate" column="`gmt_create`" javaType="java.util.Date" jdbcType="DATE"/>
+        <result property="gmtModified" column="`gmt_modified`" javaType="java.util.Date" jdbcType="DATE"/>
+        <result property="gmtFinished" column="`gmt_finished`" javaType="java.util.Date" jdbcType="DATE"/>
+        <result property="stepCount" column="`step_count`" javaType="int" jdbcType="INTEGER"/>
+        <result property="routeLength" column="`route_length`" javaType="int" jdbcType="INTEGER"/>
+        <result property="routeInfo" column="`route_info`" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="sportRoute_columns">
+        `uid`,`gmt_create`,`gmt_modified`,`gmt_finished`,`step_count`,`route_length`,`route_info`
+    </sql>
+
+    <insert id="insert" parameterType="com.csb.sports.common.pojo.SportRouteDo">
+        insert into sport_route (`uid`,`gmt_create`,`gmt_modified`,`step_count`,`route_length`,`route_info`)
+        values (#{uid,jdbcType=VARCHAR}, CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP
+          ,#{stepCount,jdbcType=INTEGER},#{routeLength,jdbcType=INTEGER}, #{routeInfo,jdbcType=VARCHAR} )
+    </insert>
+
+    <select id="selectAll" resultMap="RM-sportRoute">
+        select
+        <include refid="sportRoute_columns"/>
+        from sport_route
+    </select>
+
+    <delete id="deleteByUid" parameterType="java.lang.String">
+        delete from sport_route
+        where `uid` = #{uid,jdbcType=VARCHAR}
+    </delete>
+
+    <update id="update" parameterType="com.csb.sports.common.pojo.SportRouteDo">
+        update sport_route
+        <set>
+            <if test="gmtFinished != null">
+                `userName` = #{gmtFinished,jdbcType=DATE},
+            </if>
+            <if test="stepCount != null">
+                `step_count` = #{stepCount,jdbcType=INTEGER},
+            </if>
+            <if test="routeLength != null">
+                `route_length` = #{routeLength,jdbcType=INTEGER},
+            </if>
+            <if test="routeInfo != null">
+                `route_info` = #{routeInfo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where `uid` = #{uid,jdbcType=VARCHAR}
+    </update>
+</mapper>

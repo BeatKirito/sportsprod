@@ -21,6 +21,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
                 <value>com.csb.sports.core.service.*</value>
                 <!--如果使用的是 hibernate 则这里也要扫描路径，但是 mybatis 不需要-->
                 <!--<value>com.youmeek.ssm.manage.dao.*</value>-->
+                <!-- test -->
             </list>
         </property>
     </bean>

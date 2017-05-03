@@ -48,6 +48,7 @@ import backtype.storm.generated.TopologySummary;
 import backtype.storm.utils.NimbusClient;
 import backtype.storm.utils.NimbusClientWrapper;
 import backtype.storm.utils.Utils;
+import com.csb.sports.common.util.LoggerUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -158,12 +159,14 @@ public final class JStormHelper {
     }
     
     public static void killTopology(Map conf, String topologyName) throws Exception {
+        LoggerUtil.info(LoggerUtil.SPORTSPROD_LOGGER,"begin kill topology!!!!");
         NimbusClientWrapper client = new NimbusClientWrapper();
         try {
             client.init(conf);
             KillOptions killOption = new KillOptions();
             killOption.set_wait_secs(1);
             client.getClient().killTopologyWithOpts(topologyName, killOption);
+            LoggerUtil.info(LoggerUtil.SPORTSPROD_LOGGER,"kill topology success!!");
         }finally {
             client.cleanup();
         }
